@@ -196,7 +196,23 @@ This starts all three services:
 - **Node API**: http://localhost:5000
 - **Python Service**: http://localhost:8000
 
-> The Python Docker image includes Chromium and ChromeDriver for Selenium.
+---
+
+## 🌐 Cloud Deployment (Vercel + Render)
+
+### 1. Deploy Frontend to Vercel
+1. Import `https://github.com/Ravana01m/web_scraping_project` into [Vercel](https://vercel.com).
+2. Vercel automatically detects `vercel.json` and builds the React Vite frontend.
+3. Set Environment Variable in Vercel settings:
+   - `VITE_API_URL`: Your backend API URL (e.g., `https://node-review-api.onrender.com`)
+
+### 2. Deploy Backend to Render (Docker + Chromium)
+Selenium requires Chromium, which is containerized in `python-service/Dockerfile`.
+1. Go to [Render](https://render.com) and click **New +** → **Blueprint**.
+2. Select `render.yaml` from this repository. Render automatically provisions:
+   - **Python Scraping Service** (Docker image with Chromium/ChromeDriver)
+   - **Node.js API Gateway** (Express backend connected to Python service)
+3. Set `FRONTEND_URL` in Render to your Vercel URL (e.g., `https://web-scraping-project.vercel.app`).
 
 ---
 

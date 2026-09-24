@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: python-scraping-service
+    env: docker
+    dockerfilePath: python-service/Dockerfile
+    dockerContext: python-service
+    envVars:
+      - key: PORT
+        value: 8000
+    plan: free
+
+  - type: web
+    name: node-review-api
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && node src/server.js
+    envVars:
+      - key: NODE_PORT
+        value: 5000
+      - key: PYTHON_SERVICE_URL
+        fromService:
+          type: web
+          name: python-scraping-service
+          property: url
+      - key: FRONTEND_URL
+        value: "*"
+    plan: free

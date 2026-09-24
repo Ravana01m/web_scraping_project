@@ -7,8 +7,22 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
-app.use(cors({ origin: FRONTEND_URL }));
+const FRONTEND_URL = process.env.FRONTEND_URL;
+if (FRONTEND_URL && FRONTEND_URL !== '*') {
+    const allowedOrigins = FRONTEND_URL.split(',').map(url => url.trim());
+    app.use(cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+                callback(null, true);
+            } else {
+                callback(null, true);
+            }
+        },
+        credentials: true
+    }));
+} else {
+    app.use(cors());
+}
 
 app.use(express.json());
 
